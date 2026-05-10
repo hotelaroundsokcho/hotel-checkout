@@ -1,843 +1,407 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mobile Check-out — Hotel Around Sokcho</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --navy: #0A2342;
-      --cyan: #00B4D8;
-      --navy-light: #0d2d55;
-      --navy-dark: #061628;
-      --cyan-dim: rgba(0,180,216,0.15);
-      --cyan-border: rgba(0,180,216,0.35);
-      --white: #FFFFFF;
-      --off-white: #F4F7FA;
-      --gray-light: rgba(255,255,255,0.08);
-      --gray-text: rgba(255,255,255,0.55);
-      --error: #FF6B6B;
-      --success: #4ECDC4;
-      --radius: 12px;
-      --radius-sm: 8px;
-      --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mobile Check-out — Hotel Around Sokcho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --esp:#2C1810;--mah:#5C3317;--ter:#8B5E3C;--car:#B8895A;
+  --sand:#D4B896;--parch:#EDE0D0;--cream:#F5EFE6;--ivory:#FAF7F3;--ww:#FFFCF9;
+  --gold:#C9973A;--gl:#F5EAD2;
+  --tp:#2C1810;--ts:#6B4C35;--tm:#A08060;--th:#C4A882;
+  --bd:rgba(44,24,16,0.10);--bdw:rgba(44,24,16,0.18);
+  --r:16px;--rm:10px;--rs:8px;
+  --amber:#C9973A;--amber-l:#F5EAD2;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--cream);color:var(--tp);min-height:100vh;max-width:480px;margin:0 auto;overflow-x:hidden;}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html { scroll-behavior: smooth; }
+.hdr{background:var(--esp);position:relative;overflow:hidden;}
+.hdr-tex{position:absolute;inset:0;background:radial-gradient(ellipse 200px 160px at 90% -20%,rgba(201,151,58,.12),transparent 70%),radial-gradient(ellipse 140px 180px at -10% 110%,rgba(184,137,90,.08),transparent 70%);pointer-events:none;}
+.hdr-in{padding:32px 24px 22px;position:relative;z-index:1;}
+.lang-row{display:flex;justify-content:flex-end;gap:8px;margin-bottom:24px;}
+.lbtn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.10em;color:rgba(255,255,255,.38);background:none;border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 13px;cursor:pointer;transition:all .2s;}
+.lbtn.on,.lbtn:hover{color:var(--gold);border-color:rgba(201,151,58,.45);}
+.eye{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.htit{font-family:'Playfair Display',Georgia,serif;font-size:36px;font-weight:400;font-style:italic;color:var(--ww);line-height:1.12;margin-bottom:8px;}
+.hsub{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:rgba(255,255,255,.38);letter-spacing:.04em;}
 
-    body {
-      background: var(--navy-dark);
-      color: var(--white);
-      font-family: 'Noto Sans KR', sans-serif;
-      font-weight: 300;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+.prog-wrap{background:rgba(0,0,0,.22);padding:16px 24px 18px;}
+.step-track{display:flex;align-items:center;}
+.sdot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;flex-shrink:0;transition:all .3s;background:rgba(255,255,255,.07);color:rgba(255,255,255,.28);border:.5px solid rgba(255,255,255,.10);}
+.sdot.act{background:var(--gold);color:var(--esp);border-color:var(--gold);font-weight:600;}
+.sdot.done{background:rgba(201,151,58,.18);color:var(--gold);border-color:rgba(201,151,58,.35);}
+.sline{flex:1;height:.5px;background:rgba(255,255,255,.08);transition:background .35s;}
+.sline.done{background:rgba(201,151,58,.30);}
+.prog-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.plabel{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;letter-spacing:.06em;color:rgba(255,255,255,.35);}
+.plabel span{color:var(--gold);}
+.pbar-w{width:80px;height:2px;background:rgba(255,255,255,.10);border-radius:2px;overflow:hidden;}
+.pbar{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease;}
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,180,216,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(10,35,66,0.8) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
+.sw{padding:0 20px 110px;}
+.sec{display:none;animation:fu .28s ease;}
+.sec.act{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ── LANG TOGGLE ── */
-    .lang-bar {
-      position: fixed; top: 0; right: 0; z-index: 100;
-      padding: 12px 20px; display: flex; gap: 4px;
-    }
-    .lang-btn {
-      background: transparent;
-      border: 1px solid var(--cyan-border);
-      color: var(--gray-text);
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 13px; font-weight: 400;
-      letter-spacing: 0.08em;
-      padding: 7px 14px; border-radius: 20px;
-      cursor: pointer; transition: var(--transition);
-    }
-    .lang-btn.active {
-      background: var(--cyan); border-color: var(--cyan);
-      color: var(--navy-dark); font-weight: 500;
-    }
+.sh{padding:26px 0 18px;}
+.seye{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--car);margin-bottom:8px;}
+.stit{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;color:var(--esp);line-height:1.18;}
+.sdesc{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--ts);margin-top:6px;line-height:1.65;}
 
-    /* ── WRAPPER ── */
-    .wrapper {
-      position: relative; z-index: 1;
-      max-width: 520px; margin: 0 auto;
-      padding: 0 20px 60px;
-    }
+.fg{margin-bottom:16px;}
+.fl{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.04em;color:var(--ts);margin-bottom:7px;display:block;}
+.fl .req{color:var(--gold);margin-left:2px;}
+.fi{width:100%;background:var(--ivory);border:1px solid var(--bd);border-radius:var(--rm);padding:16px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:var(--tp);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;}
+.fi::placeholder{color:var(--th);font-weight:300;}
+.fi:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,151,58,.13);background:var(--ww);}
 
-    /* ── HERO ── */
-    .hero {
-      text-align: center;
-      padding: 56px 0 40px;
-      animation: fadeUp 0.8s ease both;
-    }
-    .hotel-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid var(--cyan-border);
-      border-radius: 24px; padding: 7px 18px;
-      margin-bottom: 20px;
-      font-size: 12px; font-weight: 500;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--cyan);
-    }
-    .hotel-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--cyan); border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(34px, 9vw, 46px);
-      font-weight: 300; line-height: 1.15;
-      letter-spacing: 0.02em; margin-bottom: 8px;
-    }
-    .hero h1 em { font-style: italic; color: var(--cyan); }
-    .hero-sub {
-      font-size: 14px; letter-spacing: 0.12em;
-      color: var(--gray-text); text-transform: uppercase;
-    }
+/* 선택 카드 */
+.cho{background:var(--ivory);border:1px solid var(--bd);border-radius:var(--rm);padding:18px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;cursor:pointer;transition:all .2s;}
+.cho:active{transform:scale(.98);}
+.cho.ok{border-color:rgba(201,151,58,.45);background:var(--gl);box-shadow:0 0 0 1.5px var(--gold);}
+.cho.warn{border-color:rgba(184,137,90,.55);background:#FDF5E8;box-shadow:0 0 0 1.5px var(--ter);}
 
-    /* ── PROGRESS ── */
-    .progress-bar {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0; margin-bottom: 36px;
-      animation: fadeUp 0.8s 0.1s ease both;
-      opacity: 0; animation-fill-mode: forwards;
-    }
-    .step-dot {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 500; color: var(--gray-text);
-      transition: var(--transition); flex-shrink: 0;
-    }
-    .step-dot.active { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,180,216,0.15); }
-    .step-dot.done { background: var(--cyan); border-color: var(--cyan); color: var(--navy-dark); }
-    .step-dot.done::after { content: '✓'; font-size: 13px; }
-    .step-line { width: 40px; height: 1px; background: rgba(255,255,255,0.1); transition: background var(--transition); }
-    .step-line.done { background: var(--cyan); }
+.radio{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--bdw);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;background:var(--ww);}
+.radio.ok{border-color:var(--gold);background:var(--gold);}
+.radio.ok::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff;display:block;}
+.radio.warn{border-color:var(--ter);background:var(--ter);}
+.radio.warn::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff;display:block;}
 
-    /* ── SECTION CARD ── */
-    .section-card {
-      background: var(--gray-light);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: var(--radius);
-      padding: 28px 24px; margin-bottom: 16px;
-      backdrop-filter: blur(10px);
-      animation: fadeUp 0.6s ease both;
-      display: none;
-    }
-    .section-card.active { display: block; }
-    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-    .section-num {
-      width: 32px; height: 32px;
-      background: var(--cyan-dim);
-      border: 1px solid var(--cyan-border);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px; color: var(--cyan); flex-shrink: 0;
-    }
-    .section-title { font-size: 18px; font-weight: 500; letter-spacing: 0.04em; }
-    .section-title-en { font-size: 13px; color: var(--gray-text); letter-spacing: 0.1em; display: block; margin-top: 2px; }
+.cho-icon{font-size:22px;flex-shrink:0;}
+.cho-tit{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--tp);}
+.cho-desc{font-size:12px;font-weight:300;color:var(--tm);margin-top:3px;}
 
-    /* ── FORM ── */
-    .form-group { margin-bottom: 16px; }
-    .form-label {
-      display: block; font-size: 13px; font-weight: 500;
-      letter-spacing: 0.1em; color: var(--gray-text);
-      text-transform: uppercase; margin-bottom: 8px;
-    }
-    .form-label .required { color: var(--cyan); margin-left: 3px; }
-    .form-input {
-      width: 100%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--radius-sm);
-      padding: 15px 16px;
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 16px; font-weight: 300;
-      color: var(--white); outline: none;
-      transition: var(--transition); -webkit-appearance: none;
-    }
-    .form-input::placeholder { color: rgba(255,255,255,0.25); }
-    .form-input:focus {
-      border-color: var(--cyan);
-      background: rgba(0,180,216,0.06);
-      box-shadow: 0 0 0 3px rgba(0,180,216,0.08);
-    }
-    .form-input.error { border-color: var(--error); }
+.detail-box{background:var(--ivory);border:1px solid var(--bd);border-radius:var(--rm);padding:14px;margin-top:-4px;margin-bottom:10px;display:none;}
+.detail-box.on{display:block;}
+.dtxt{width:100%;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:400;color:var(--tp);line-height:1.6;resize:none;min-height:64px;}
+.dtxt::placeholder{color:var(--th);}
 
-    /* ── ROOM CONDITION OPTIONS ── */
-    .option-group { display: flex; flex-direction: column; gap: 10px; }
-    .option-item {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius-sm);
-      padding: 16px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex; align-items: center; gap: 14px;
-    }
-    .option-item:hover { border-color: var(--cyan-border); }
-    .option-item.selected {
-      background: var(--cyan-dim);
-      border-color: var(--cyan);
-    }
-    .option-radio {
-      width: 20px; height: 20px;
-      border: 2px solid rgba(255,255,255,0.25);
-      border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: var(--transition);
-    }
-    .option-item.selected .option-radio {
-      border-color: var(--cyan);
-      background: var(--cyan);
-    }
-    .option-item.selected .option-radio::after {
-      content: '';
-      width: 8px; height: 8px;
-      background: var(--navy-dark); border-radius: 50%;
-    }
-    .option-label { font-size: 16px; font-weight: 400; }
-    .option-label small { display: block; font-size: 13px; color: var(--gray-text); margin-top: 2px; letter-spacing: 0.06em; }
-    .option-label.warn small { color: rgba(255,107,107,0.8); }
+/* 별점 */
+.stars{display:flex;gap:10px;justify-content:center;padding:22px 0 14px;}
+.sbtn{font-size:38px;background:none;border:none;cursor:pointer;line-height:1;transition:transform .15s;filter:grayscale(1) opacity(.3);padding:4px;}
+.sbtn.on{filter:none;transform:scale(1.1);}
+.shint{text-align:center;font-size:13px;font-weight:300;color:var(--th);margin-bottom:18px;min-height:20px;}
+.ctxt{width:100%;background:var(--ivory);border:1px solid var(--bd);border-radius:var(--rm);padding:15px 16px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--tp);outline:none;resize:none;min-height:90px;line-height:1.7;transition:border-color .2s,box-shadow .2s;}
+.ctxt::placeholder{color:var(--th);font-weight:300;}
+.ctxt:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,151,58,.13);}
 
-    /* 조건부 textarea */
-    .condition-detail {
-      margin-top: 12px;
-      display: none;
-      animation: fadeUp 0.3s ease;
-    }
-    .condition-detail.show { display: block; }
-    textarea.form-input {
-      resize: none;
-      min-height: 80px;
-      line-height: 1.6;
-    }
+/* 네비 */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:10px 20px 30px;background:linear-gradient(to top,var(--cream) 72%,transparent);z-index:100;}
+.nrow{display:flex;gap:10px;}
+.bprev{width:52px;height:54px;background:var(--ivory);border:1px solid var(--bdw);border-radius:var(--rm);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--ts);transition:all .2s;}
+.bprev:hover{border-color:var(--esp);color:var(--esp);}
+.bnext{flex:1;height:54px;background:var(--esp);color:var(--ww);border:none;border-radius:var(--rm);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.04em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;}
+.bnext:hover{background:var(--mah);}
+.bnext:active{transform:scale(.98);}
+.bsub{flex:1;height:54px;background:var(--gold);color:var(--esp);border:none;border-radius:var(--rm);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;letter-spacing:.03em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;}
+.bsub:hover{filter:brightness(1.06);}
+.bsub:active{transform:scale(.98);}
 
-    /* ── STAR RATING ── */
-    .star-row {
-      display: flex; justify-content: center; gap: 8px;
-      padding: 12px 0;
-    }
-    .star {
-      font-size: 36px; cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-      opacity: 0.3;
-      user-select: none;
-    }
-    .star.lit { opacity: 1; }
-    .star:hover { transform: scale(1.15); }
-    .star-label {
-      text-align: center; font-size: 14px;
-      color: var(--gray-text); margin-top: 4px;
-      letter-spacing: 0.06em; min-height: 20px;
-    }
+.vmsg{background:rgba(139,58,58,.07);border:1px solid rgba(139,58,58,.22);border-radius:var(--rm);padding:12px 14px;font-size:13px;font-weight:400;color:#7A2C2C;margin-bottom:14px;display:none;}
+.vmsg.on{display:block;}
 
-    /* ── NAV BUTTONS ── */
-    .nav-buttons { display: flex; gap: 12px; margin-top: 24px; }
-    .btn-prev {
-      flex: 0 0 auto; padding: 16px 22px;
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius-sm);
-      color: var(--gray-text);
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 15px; cursor: pointer; transition: var(--transition);
-    }
-    .btn-prev:hover { border-color: rgba(255,255,255,0.35); color: var(--white); }
-    .btn-next {
-      flex: 1; padding: 17px 24px;
-      background: var(--cyan); border: none;
-      border-radius: var(--radius-sm);
-      color: var(--navy-dark);
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 16px; font-weight: 500;
-      letter-spacing: 0.05em; cursor: pointer;
-      transition: var(--transition);
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-next:hover { background: #00cff7; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,180,216,0.3); }
-    .btn-next:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); cursor: not-allowed; transform: none; box-shadow: none; }
-    .btn-submit {
-      width: 100%; padding: 18px 24px;
-      background: var(--cyan); border: none;
-      border-radius: var(--radius-sm);
-      color: var(--navy-dark);
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 17px; font-weight: 500;
-      letter-spacing: 0.06em; cursor: pointer;
-      transition: var(--transition); margin-top: 24px;
-      position: relative; overflow: hidden;
-    }
-    .btn-submit:hover { background: #00cff7; transform: translateY(-1px); box-shadow: 0 12px 32px rgba(0,180,216,0.35); }
-    .btn-submit:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); cursor: not-allowed; transform: none; box-shadow: none; }
-    .btn-submit .loading-spinner {
-      display: inline-block; width: 16px; height: 16px;
-      border: 2px solid rgba(10,35,66,0.3); border-top-color: var(--navy-dark);
-      border-radius: 50%; animation: spin 0.8s linear infinite;
-      margin-right: 8px; vertical-align: middle;
-    }
+.lovo{display:none;position:fixed;inset:0;background:rgba(44,24,16,.65);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:18px;}
+.lovo.on{display:flex;}
+.lring{width:44px;height:44px;border:2px solid rgba(201,151,58,.20);border-top-color:var(--gold);border-radius:50%;animation:spin .85s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ltxt{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,.65);letter-spacing:.06em;}
 
-    /* ── ERROR MSG ── */
-    .error-msg { color: var(--error); font-size: 13px; margin-top: 6px; display: none; }
-    .error-msg.show { display: block; }
+/* 완료 */
+.cmpw{display:none;padding:48px 4px 90px;text-align:center;animation:fu .4s ease;}
+.cmpw.on{display:block;}
+.corn{width:72px;height:72px;background:var(--parch);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;border:1px solid rgba(201,151,58,.25);}
+.ctit{font-family:'Playfair Display',serif;font-size:32px;font-weight:400;font-style:italic;color:var(--esp);margin-bottom:12px;line-height:1.2;}
+.cdesc{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--ts);line-height:1.75;margin-bottom:8px;}
 
-    /* ── SUCCESS SCREEN ── */
-    #success-screen { display: none; text-align: center; padding: 40px 0; animation: fadeUp 0.6s ease; }
-    #success-screen.show { display: block; }
-    .success-icon {
-      width: 72px; height: 72px;
-      background: rgba(0,180,216,0.1);
-      border: 1px solid var(--cyan-border);
-      border-radius: 50%; margin: 0 auto 24px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 32px;
-    }
-    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; margin-bottom: 8px; }
-    .success-title em { font-style: italic; color: var(--cyan); }
-    .success-sub { font-size: 15px; color: var(--gray-text); margin-bottom: 32px; line-height: 1.7; }
+.room-wrap{margin:20px 0 8px;}
+.room-lbl{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--th);margin-bottom:6px;}
+.room-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:var(--esp);line-height:1;}
+.room-time{font-size:12px;font-weight:300;color:var(--th);margin-top:6px;margin-bottom:28px;}
 
-    /* checkout time display */
-    .checkout-time-card {
-      background: var(--cyan-dim);
-      border: 1px solid var(--cyan-border);
-      border-radius: var(--radius); padding: 20px;
-      margin-bottom: 24px; text-align: center;
-    }
-    .checkout-room {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 44px; font-weight: 300; color: var(--cyan);
-      line-height: 1; margin-bottom: 4px;
-    }
-    .checkout-room-label { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-text); }
-    .checkout-time-val {
-      margin-top: 14px; font-size: 15px; color: rgba(255,255,255,0.7);
-      letter-spacing: 0.04em;
-    }
+.rv-card{background:var(--esp);border-radius:var(--r);padding:22px 20px;margin-bottom:24px;text-align:left;}
+.rv-eye{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.rv-link{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border-radius:var(--rs);padding:14px;margin-bottom:8px;text-decoration:none;transition:background .2s;}
+.rv-link:hover{background:rgba(255,255,255,.11);}
+.rv-link:last-child{margin-bottom:0;}
+.rv-ico{font-size:20px;flex-shrink:0;}
+.rv-name{font-size:13px;font-weight:500;color:#fff;}
+.rv-sub{font-size:11px;color:rgba(255,255,255,.40);margin-top:2px;}
+.rv-arr{margin-left:auto;color:rgba(255,255,255,.28);font-size:20px;}
 
-    /* review nudge */
-    .review-nudge {
-      background: var(--gray-light);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: var(--radius); padding: 20px;
-      margin-bottom: 24px;
-    }
-    .review-nudge-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; letter-spacing: 0.04em; }
-    .review-links { display: flex; flex-direction: column; gap: 8px; }
-    .review-link {
-      display: flex; align-items: center; gap: 12px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius-sm); padding: 14px 16px;
-      text-decoration: none; color: var(--white);
-      transition: var(--transition); font-size: 15px;
-    }
-    .review-link:hover { border-color: var(--cyan-border); background: rgba(0,180,216,0.06); }
-    .review-link .r-icon { font-size: 20px; flex-shrink: 0; }
-    .review-link .r-name { font-weight: 500; font-size: 15px; }
-    .review-link .r-sub { font-size: 12px; color: var(--gray-text); letter-spacing: 0.06em; display: block; margin-top: 1px; }
-    .review-link .r-arrow { margin-left: auto; color: var(--gray-text); font-size: 14px; }
+.ct-lbl{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.10em;text-transform:uppercase;color:var(--th);margin-bottom:12px;text-align:left;}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ct-item{background:var(--ivory);border:1px solid var(--bd);border-radius:var(--rm);padding:14px 10px;text-align:center;text-decoration:none;color:var(--tp);font-size:12px;font-weight:500;transition:all .2s;display:flex;flex-direction:column;gap:6px;align-items:center;}
+.ct-item:hover{border-color:var(--gold);background:var(--gl);}
+.ct-ico{font-size:20px;}
 
-    .contacts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .contact-item {
-      background: var(--gray-light);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: var(--radius-sm); padding: 14px;
-      text-align: center; text-decoration: none; color: var(--white);
-      transition: var(--transition);
-    }
-    .contact-item:hover { border-color: var(--cyan-border); }
-    .contact-item .c-icon { font-size: 24px; margin-bottom: 6px; display: block; }
-    .contact-item .c-label { font-size: 12px; color: var(--gray-text); letter-spacing: 0.1em; text-transform: uppercase; display: block; }
-    .contact-item .c-val { font-size: 14px; font-weight: 500; margin-top: 3px; display: block; }
-
-    /* ── TOAST ── */
-    .toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: rgba(10,35,66,0.95);
-      border: 1px solid var(--cyan-border);
-      backdrop-filter: blur(12px);
-      border-radius: 24px; padding: 14px 26px;
-      font-size: 15px; color: var(--white);
-      z-index: 999; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-      white-space: nowrap;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .toast.error { border-color: rgba(255,107,107,0.5); }
-
-    /* ── FOOTER ── */
-    .footer { text-align: center; padding: 24px 0; font-size: 12px; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; text-transform: uppercase; }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+@media(max-width:360px){.htit{font-size:30px;}.stit{font-size:23px;}.room-num{font-size:40px;}}
+</style>
 </head>
 <body>
 
-<!-- LANG TOGGLE -->
-<div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('ko')" id="btn-ko">KO</button>
-  <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+<div class="lovo" id="lo"><div class="lring"></div><div class="ltxt" id="ltxt">체크아웃 처리 중...</div></div>
+
+<header class="hdr">
+  <div class="hdr-tex"></div>
+  <div class="hdr-in">
+    <div class="lang-row">
+      <button class="lbtn on" onclick="setLang('ko')" id="bKO">KO</button>
+      <button class="lbtn" onclick="setLang('en')" id="bEN">EN</button>
+    </div>
+    <div class="eye">Hotel Around Sokcho</div>
+    <h1 class="htit" id="hT">안녕히 가세요</h1>
+    <p class="hsub" id="hS">Mobile Check-out · 모바일 체크아웃</p>
+  </div>
+  <div class="prog-wrap">
+    <div class="step-track">
+      <div class="sdot act" id="d1">1</div><div class="sline" id="l1"></div>
+      <div class="sdot" id="d2">2</div><div class="sline" id="l2"></div>
+      <div class="sdot" id="d3">3</div><div class="sline" id="l3"></div>
+      <div class="sdot" id="d4">4</div>
+    </div>
+    <div class="prog-meta">
+      <div class="plabel"><span id="sL">Step 1</span> / 4</div>
+      <div class="pbar-w"><div class="pbar" id="pB" style="width:25%"></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="sw">
+  <div class="vmsg" id="vm"></div>
+
+  <!-- STEP 1 -->
+  <div class="sec act" id="s1">
+    <div class="sh"><div class="seye" id="e1">Step 1 of 4</div><h2 class="stit" id="t1">투숙객 확인</h2><p class="sdesc" id="d1t">성명과 객실번호를 입력해 주세요</p></div>
+    <div class="fg"><label class="fl" id="ln">성명 <span class="req">*</span></label><input class="fi" type="text" id="gN" placeholder="홍길동" autocomplete="name"></div>
+    <div class="fg"><label class="fl" id="lr">객실번호 <span class="req">*</span></label><input class="fi" type="text" id="rN" placeholder="예: 1021" inputmode="numeric"></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="sec" id="s2">
+    <div class="sh"><div class="seye" id="e2">Step 2 of 4</div><h2 class="stit" id="t2">객실 상태</h2><p class="sdesc" id="d2t">퇴실 전 객실을 확인해 주세요</p></div>
+    <div class="cho" id="c_ok" onclick="selCond('ok')">
+      <div class="radio" id="r_ok"></div>
+      <span class="cho-icon">✅</span>
+      <div><div class="cho-tit" id="cot1">이상 없음</div><div class="cho-desc" id="cod1">파손·분실·오염 없음</div></div>
+    </div>
+    <div class="cho" id="c_iss" onclick="selCond('iss')">
+      <div class="radio" id="r_iss"></div>
+      <span class="cho-icon">⚠️</span>
+      <div><div class="cho-tit" id="cot2">파손·분실 있음</div><div class="cho-desc" id="cod2">내용을 아래에 기재해 주세요</div></div>
+    </div>
+    <div class="detail-box" id="ib"><textarea class="dtxt" id="iT" placeholder="파손·분실 내용을 입력해 주세요" rows="3"></textarea></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="sec" id="s3">
+    <div class="sh"><div class="seye" id="e3">Step 3 of 4</div><h2 class="stit" id="t3">흡연 확인</h2><p class="sdesc" id="d3t">객실 내 흡연 여부를 확인해 주세요</p></div>
+    <div class="cho" id="c_ns" onclick="selSmoke('no')">
+      <div class="radio" id="r_ns"></div>
+      <span class="cho-icon">🚭</span>
+      <div><div class="cho-tit" id="snt1">흡연 없음</div><div class="cho-desc" id="snd1">객실 내 흡연하지 않았습니다</div></div>
+    </div>
+    <div class="cho" id="c_sm" onclick="selSmoke('yes')">
+      <div class="radio" id="r_sm"></div>
+      <span class="cho-icon">🚬</span>
+      <div><div class="cho-tit" id="snt2">흡연 있음</div><div class="cho-desc" id="snd2">추가 요금이 청구될 수 있습니다 (30만원)</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="sec" id="s4">
+    <div class="sh"><div class="seye" id="e4">Step 4 of 4</div><h2 class="stit" id="t4">이번 숙박은 어떠셨나요?</h2><p class="sdesc" id="d4t">솔직한 평가가 큰 도움이 됩니다</p></div>
+    <div class="stars">
+      <button class="sbtn" data-v="1" onclick="setStar(1)">⭐</button>
+      <button class="sbtn" data-v="2" onclick="setStar(2)">⭐</button>
+      <button class="sbtn" data-v="3" onclick="setStar(3)">⭐</button>
+      <button class="sbtn" data-v="4" onclick="setStar(4)">⭐</button>
+      <button class="sbtn" data-v="5" onclick="setStar(5)">⭐</button>
+    </div>
+    <div class="shint" id="sh">별점을 선택해 주세요</div>
+    <div class="fg"><label class="fl" id="lcom">한마디</label><textarea class="ctxt" id="com" placeholder="자유롭게 남겨주세요 (선택)" rows="4"></textarea></div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="cmpw" id="cw">
+    <div class="corn">🏨</div>
+    <h2 class="ctit" id="cT">체크아웃 완료</h2>
+    <p class="cdesc" id="cD1">이용해 주셔서 진심으로 감사드립니다.</p>
+    <p class="cdesc" id="cD2">또 다시 찾아주실 날을 기다리겠습니다.</p>
+    <div class="room-wrap">
+      <div class="room-lbl" id="rl">객실</div>
+      <div class="room-num" id="rnum">—</div>
+      <div class="room-time" id="rt"></div>
+    </div>
+    <div class="rv-card">
+      <div class="rv-eye" id="re">소중한 리뷰를 남겨주세요</div>
+      <a class="rv-link" href="https://www.google.com/maps/search/?api=1&query=호텔어라운드+속초" target="_blank">
+        <span class="rv-ico">🔍</span>
+        <div><div class="rv-name" id="rg">Google 리뷰</div><div class="rv-sub" id="rgs">Google Maps에서 리뷰 남기기</div></div>
+        <span class="rv-arr">→</span>
+      </a>
+      <a class="rv-link" href="https://pf.kakao.com/_hotelaroundsokcho" target="_blank">
+        <span class="rv-ico">💬</span>
+        <div><div class="rv-name" id="rk">카카오채널</div><div class="rv-sub">@hotelaroundsokcho</div></div>
+        <span class="rv-arr">→</span>
+      </a>
+    </div>
+    <div class="ct-lbl" id="cl">문의 연락처</div>
+    <div class="ct-grid">
+      <a class="ct-item" href="tel:033-800-8899"><span class="ct-ico">📞</span><span>033-800-8899</span></a>
+      <a class="ct-item" href="https://pf.kakao.com/_hotelaroundsokcho"><span class="ct-ico">💬</span><span>카카오</span></a>
+      <a class="ct-item" href="https://wa.me/821042820392"><span class="ct-ico">📱</span><span>WhatsApp</span></a>
+      <a class="ct-item" href="mailto:hotelaroundsokcho@gmail.com"><span class="ct-ico">✉️</span><span>Email</span></a>
+    </div>
+  </div>
 </div>
 
-<div class="wrapper">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hotel-badge">
-      <span class="t" data-ko="모바일 체크아웃" data-en="Mobile Check-out">모바일 체크아웃</span>
-    </div>
-    <h1><em class="t" data-ko="안녕히 가세요" data-en="Safe Travels">안녕히 가세요</em></h1>
-    <p class="hero-sub">Hotel Around Sokcho</p>
-  </div>
-
-  <!-- PROGRESS (4단계) -->
-  <div class="progress-bar" id="progress-bar">
-    <div class="step-dot active" id="dot-1">1</div>
-    <div class="step-line" id="line-1"></div>
-    <div class="step-dot" id="dot-2">2</div>
-    <div class="step-line" id="line-2"></div>
-    <div class="step-dot" id="dot-3">3</div>
-    <div class="step-line" id="line-3"></div>
-    <div class="step-dot" id="dot-4">4</div>
-  </div>
-
-  <!-- SECTION 1: 투숙객 확인 -->
-  <div class="section-card active" id="sec-1">
-    <div class="section-header">
-      <div class="section-num">1</div>
-      <div>
-        <div class="section-title t" data-ko="투숙객 확인" data-en="Guest Verification">투숙객 확인</div>
-        <span class="section-title-en t" data-ko="성명과 객실번호를 입력해 주세요" data-en="Please enter your name and room number">성명과 객실번호를 입력해 주세요</span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label"><span class="t" data-ko="예약자 성명" data-en="Guest Name">예약자 성명</span><span class="required">*</span></label>
-      <input class="form-input" id="inp-name" type="text" name="name" placeholder="홍길동 / Hong Gildong" autocomplete="name">
-      <div class="error-msg" id="err-name"><span class="t" data-ko="성명을 입력해 주세요." data-en="Please enter your name.">성명을 입력해 주세요.</span></div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label"><span class="t" data-ko="객실번호" data-en="Room Number">객실번호</span><span class="required">*</span></label>
-      <input class="form-input" id="inp-room" type="text" name="room" placeholder="예: 1203" inputmode="numeric" maxlength="6">
-      <div class="error-msg" id="err-room"><span class="t" data-ko="객실번호를 입력해 주세요." data-en="Please enter your room number.">객실번호를 입력해 주세요.</span></div>
-    </div>
-
-    <div class="nav-buttons">
-      <button class="btn-next" onclick="goNext(1)">
-        <span class="t" data-ko="다음" data-en="Next">다음</span> →
-      </button>
-    </div>
-  </div>
-
-  <!-- SECTION 2: 객실 상태 확인 -->
-  <div class="section-card" id="sec-2">
-    <div class="section-header">
-      <div class="section-num">2</div>
-      <div>
-        <div class="section-title t" data-ko="객실 상태 확인" data-en="Room Condition">객실 상태 확인</div>
-        <span class="section-title-en t" data-ko="퇴실 전 객실을 확인해 주세요" data-en="Please inspect your room before leaving">퇴실 전 객실을 확인해 주세요</span>
-      </div>
-    </div>
-
-    <div class="option-group" id="condition-group">
-      <div class="option-item" data-val="이상없음" onclick="selectOption('condition', this)">
-        <div class="option-radio"></div>
-        <div class="option-label">
-          <span class="t" data-ko="이상 없음" data-en="No issues">이상 없음</span>
-          <small class="t" data-ko="파손·분실·오염 없음" data-en="No damage, loss, or contamination">파손·분실·오염 없음</small>
-        </div>
-      </div>
-      <div class="option-item" data-val="파손·분실있음" onclick="selectOption('condition', this)">
-        <div class="option-radio"></div>
-        <div class="option-label warn">
-          <span class="t" data-ko="파손·분실 있음" data-en="Damage or loss found">파손·분실 있음</span>
-          <small class="t" data-ko="내용을 아래에 기재해 주세요" data-en="Please describe below">내용을 아래에 기재해 주세요</small>
-        </div>
-      </div>
-    </div>
-
-    <!-- 파손·분실 상세 입력 (조건부 표시) -->
-    <div class="condition-detail" id="condition-detail">
-      <label class="form-label" style="margin-top:4px;">
-        <span class="t" data-ko="상세 내용" data-en="Details">상세 내용</span>
-      </label>
-      <textarea class="form-input" id="inp-condition-detail"
-        placeholder="파손·분실 내용을 간략히 적어주세요 / Please briefly describe the damage or loss"></textarea>
-    </div>
-
-    <div class="error-msg" id="err-condition">
-      <span class="t" data-ko="객실 상태를 선택해 주세요." data-en="Please select a room condition.">객실 상태를 선택해 주세요.</span>
-    </div>
-
-    <div class="nav-buttons">
-      <button class="btn-prev" onclick="goPrev(2)">←</button>
-      <button class="btn-next" onclick="goNext(2)"><span class="t" data-ko="다음" data-en="Next">다음</span> →</button>
-    </div>
-  </div>
-
-  <!-- SECTION 3: 흡연 확인 -->
-  <div class="section-card" id="sec-3">
-    <div class="section-header">
-      <div class="section-num">3</div>
-      <div>
-        <div class="section-title t" data-ko="흡연 확인" data-en="Smoking Confirmation">흡연 확인</div>
-        <span class="section-title-en t" data-ko="객실 내 흡연 여부를 확인해 주세요" data-en="Please confirm smoking status in the room">객실 내 흡연 여부를 확인해 주세요</span>
-      </div>
-    </div>
-
-    <div class="option-group" id="smoking-group">
-      <div class="option-item" data-val="흡연없음" onclick="selectOption('smoking', this)">
-        <div class="option-radio"></div>
-        <div class="option-label">
-          <span class="t" data-ko="흡연 없음" data-en="No smoking">흡연 없음</span>
-          <small class="t" data-ko="객실 내 흡연하지 않았습니다" data-en="I did not smoke in the room">객실 내 흡연하지 않았습니다</small>
-        </div>
-      </div>
-      <div class="option-item" data-val="흡연있음" onclick="selectOption('smoking', this)">
-        <div class="option-radio"></div>
-        <div class="option-label warn">
-          <span class="t" data-ko="흡연 있음" data-en="Smoking occurred">흡연 있음</span>
-          <small class="t" data-ko="추가 요금이 청구될 수 있습니다 (30만원)" data-en="Additional charge may apply (₩300,000)">추가 요금이 청구될 수 있습니다 (30만원)</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="error-msg" id="err-smoking">
-      <span class="t" data-ko="흡연 여부를 선택해 주세요." data-en="Please select smoking status.">흡연 여부를 선택해 주세요.</span>
-    </div>
-
-    <div class="nav-buttons">
-      <button class="btn-prev" onclick="goPrev(3)">←</button>
-      <button class="btn-next" onclick="goNext(3)"><span class="t" data-ko="다음" data-en="Next">다음</span> →</button>
-    </div>
-  </div>
-
-  <!-- SECTION 4: 만족도 -->
-  <div class="section-card" id="sec-4">
-    <div class="section-header">
-      <div class="section-num">4</div>
-      <div>
-        <div class="section-title t" data-ko="만족도" data-en="Your Experience">만족도</div>
-        <span class="section-title-en t" data-ko="이번 숙박은 어떠셨나요?" data-en="How was your stay?">이번 숙박은 어떠셨나요?</span>
-      </div>
-    </div>
-
-    <!-- 별점 -->
-    <div class="star-row" id="star-row">
-      <span class="star" data-val="1" onclick="setStar(1)">★</span>
-      <span class="star" data-val="2" onclick="setStar(2)">★</span>
-      <span class="star" data-val="3" onclick="setStar(3)">★</span>
-      <span class="star" data-val="4" onclick="setStar(4)">★</span>
-      <span class="star" data-val="5" onclick="setStar(5)">★</span>
-    </div>
-    <div class="star-label" id="star-label">
-      <span class="t" data-ko="별점을 선택해 주세요 (선택)" data-en="Rate your stay (optional)">별점을 선택해 주세요 (선택)</span>
-    </div>
-
-    <!-- 한마디 -->
-    <div class="form-group" style="margin-top:20px;">
-      <label class="form-label">
-        <span class="t" data-ko="한마디" data-en="Comments">한마디</span>
-        <span style="font-size:9px;color:var(--gray-text);margin-left:6px;letter-spacing:0.06em;" class="t" data-ko="(선택)" data-en="(optional)">(선택)</span>
-      </label>
-      <textarea class="form-input" id="inp-comment"
-        placeholder="좋은 점, 아쉬운 점 무엇이든 자유롭게 남겨주세요 / Feel free to share any feedback"></textarea>
-    </div>
-
-    <button class="btn-submit" id="btn-submit" onclick="submitForm()">
-      <span class="t" data-ko="체크아웃 완료하기" data-en="Complete Check-out">체크아웃 완료하기</span>
+<div class="nav" id="nav">
+  <div class="nrow">
+    <button class="bprev" id="bp" onclick="prev()" style="display:none" aria-label="이전">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-
-    <div style="text-align:center;margin-top:12px;">
-      <button class="btn-prev" onclick="goPrev(4)" style="width:100%;text-align:center;">←  <span class="t" data-ko="이전" data-en="Back">이전</span></button>
-    </div>
+    <button class="bnext" id="bn" onclick="next()"><span id="bnL">다음</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    <button class="bsub" id="bs" onclick="sub()" style="display:none"><span id="bsL">체크아웃 완료하기</span></button>
   </div>
-
-  <!-- SUCCESS SCREEN -->
-  <div id="success-screen">
-    <div class="success-icon">🏨</div>
-    <div class="success-title"><em class="t" data-ko="체크아웃 완료" data-en="Check-out Complete">체크아웃 완료</em></div>
-    <p class="success-sub">
-      <span class="t"
-        data-ko="이용해 주셔서 진심으로 감사드립니다.<br>또 다시 찾아주실 날을 기다리겠습니다 😊"
-        data-en="Thank you so much for your stay.<br>We look forward to welcoming you again 😊">
-        이용해 주셔서 진심으로 감사드립니다.<br>또 다시 찾아주실 날을 기다리겠습니다 😊
-      </span>
-    </p>
-
-    <!-- 객실번호 + 체크아웃 시간 -->
-    <div class="checkout-time-card">
-      <div class="checkout-room" id="success-room">—</div>
-      <div class="checkout-room-label t" data-ko="호실" data-en="Room">호실</div>
-      <div class="checkout-time-val t"
-        data-ko="체크아웃 시각이 기록되었습니다"
-        data-en="Your check-out time has been recorded">체크아웃 시각이 기록되었습니다</div>
-      <div id="success-time" style="font-size:13px;color:var(--cyan);margin-top:6px;font-weight:500;"></div>
-    </div>
-
-    <!-- 리뷰 유도 -->
-    <div class="review-nudge">
-      <div class="review-nudge-title t" data-ko="⭐ 소중한 리뷰를 남겨주세요" data-en="⭐ Please leave us a review">⭐ 소중한 리뷰를 남겨주세요</div>
-      <div class="review-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=호텔어라운드+속초" target="_blank" class="review-link">
-          <span class="r-icon">🔍</span>
-          <div>
-            <span class="r-name">Google Maps</span>
-            <span class="r-sub">Google 리뷰 / Google Review</span>
-          </div>
-          <span class="r-arrow">→</span>
-        </a>
-        <a href="https://pf.kakao.com/_hotelaroundsokcho" target="_blank" class="review-link">
-          <span class="r-icon">💬</span>
-          <div>
-            <span class="r-name">카카오채널</span>
-            <span class="r-sub">@hotelaroundsokcho</span>
-          </div>
-          <span class="r-arrow">→</span>
-        </a>
-      </div>
-    </div>
-
-    <!-- 연락처 4개 -->
-    <div style="font-size:11px;color:var(--gray-text);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;" class="t" data-ko="문의 연락처" data-en="Contact Us">문의 연락처</div>
-    <div class="contacts-grid">
-      <a href="tel:033-800-8899" class="contact-item">
-        <span class="c-icon">📞</span>
-        <span class="c-label">Phone</span>
-        <span class="c-val">033-800-8899</span>
-      </a>
-      <a href="https://pf.kakao.com/_hotelaroundsokcho" class="contact-item">
-        <span class="c-icon">💬</span>
-        <span class="c-label">Kakao</span>
-        <span class="c-val">@hotelaroundsokcho</span>
-      </a>
-      <a href="https://wa.me/821042820392" class="contact-item">
-        <span class="c-icon">📱</span>
-        <span class="c-label">WhatsApp</span>
-        <span class="c-val">+82-10-4282-0392</span>
-      </a>
-      <a href="mailto:hotelaroundsokcho@gmail.com" class="contact-item">
-        <span class="c-icon">✉️</span>
-        <span class="c-label">Email</span>
-        <span class="c-val">Gmail</span>
-      </a>
-    </div>
-  </div>
-
-  <div class="footer">© Hotel Around Sokcho · 033-800-8899</div>
 </div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// CONFIG — GAS 재배포 후 이 URL 교체
-// ═══════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyqcZS1L1fXRnefFYe83G8RBp99BRCn17fYct4vFZW931Xm26a8asA0lFFvwLnVSWZcPQ/exec';
-// ═══════════════════════════════════════════════
+const GAS='https://script.google.com/macros/s/AKfycbw_80nmXX7uAKnZIoVyJ2PYywo1ESttueJMr-VcctPxMjxRDGGnwFsfsjUDYzEWQfGltA/exec';
+let cur=1,lang='ko',cond='',smoke='',star=0;
 
-// ── STATE
-const state = {
-  lang: 'ko',
-  step: 1,
-  name: '',
-  room: '',
-  condition: '',       // '이상없음' | '파손·분실있음'
-  conditionDetail: '',
-  smoking: '',         // '흡연없음' | '흡연있음'
-  star: 0,
-  comment: ''
-};
+const T={
+ko:{hT:'안녕히 가세요',hS:'Mobile Check-out · 모바일 체크아웃',
+e1:'Step 1 of 4',t1:'투숙객 확인',d1t:'성명과 객실번호를 입력해 주세요',
+e2:'Step 2 of 4',t2:'객실 상태',d2t:'퇴실 전 객실을 확인해 주세요',
+e3:'Step 3 of 4',t3:'흡연 확인',d3t:'객실 내 흡연 여부를 확인해 주세요',
+e4:'Step 4 of 4',t4:'이번 숙박은 어떠셨나요?',d4t:'솔직한 평가가 큰 도움이 됩니다',
+ln:'성명',lr:'객실번호',lcom:'한마디',
+cot1:'이상 없음',cod1:'파손·분실·오염 없음',cot2:'파손·분실 있음',cod2:'내용을 아래에 기재해 주세요',
+snt1:'흡연 없음',snd1:'객실 내 흡연하지 않았습니다',snt2:'흡연 있음',snd2:'추가 요금이 청구될 수 있습니다 (30만원)',
+bnL:'다음',bsL:'체크아웃 완료하기',
+vF:'필수 항목을 확인해 주세요.',vC:'객실 상태를 선택해 주세요.',vS:'흡연 여부를 선택해 주세요.',
+cT:'체크아웃 완료',cD1:'이용해 주셔서 진심으로 감사드립니다.',cD2:'또 다시 찾아주실 날을 기다리겠습니다.',
+rl:'객실',re:'소중한 리뷰를 남겨주세요',rg:'Google 리뷰',rgs:'Google Maps에서 리뷰 남기기',rk:'카카오채널',cl:'문의 연락처',
+ltxt:'체크아웃 처리 중...',sh:'별점을 선택해 주세요',
+stars:['','별로예요','아쉬웠어요','괜찮았어요','좋았어요','최고였어요!']},
+en:{hT:'Farewell',hS:'Mobile Check-out',
+e1:'Step 1 of 4',t1:'Guest Confirmation',d1t:'Please enter your name and room number',
+e2:'Step 2 of 4',t2:'Room Condition',d2t:'Please review before departing',
+e3:'Step 3 of 4',t3:'Smoking Check',d3t:'Did you smoke in the room?',
+e4:'Step 4 of 4',t4:'How was your stay?',d4t:'Your feedback means a lot to us',
+ln:'Full Name',lr:'Room Number',lcom:'Comments',
+cot1:'All good',cod1:'No damage, loss, or stains',cot2:'Issue to report',cod2:'Please describe below',
+snt1:'No smoking',snd1:'I did not smoke in the room',snt2:'Smoked in room',snd2:'Additional charge may apply (KRW 300,000)',
+bnL:'Next',bsL:'Complete Check-out',
+vF:'Please fill in all required fields.',vC:'Please select room condition.',vS:'Please confirm smoking status.',
+cT:'Check-out Complete',cD1:'Thank you sincerely for your stay.',cD2:'We hope to see you again soon.',
+rl:'Room',re:'Leave us a review',rg:'Google Review',rgs:'Leave a review on Google Maps',rk:'Kakao Channel',cl:'Contact Us',
+ltxt:'Processing check-out...',sh:'Tap a star to rate',
+stars:['','Poor','Below average','Okay','Good','Excellent!']}};
 
-// ── LANG
-function setLang(lang) {
-  state.lang = lang;
-  document.querySelectorAll('[data-ko]').forEach(el => {
-    el.innerHTML = el.getAttribute('data-' + lang);
-  });
-  document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
-  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-  updateStarLabel();
+function setLang(l){lang=l;document.getElementById('bKO').className='lbtn'+(l==='ko'?' on':'');document.getElementById('bEN').className='lbtn'+(l==='en'?' on':'');applyT();}
+
+function applyT(){
+  const t=T[lang];
+  const ids=['hT','hS','e1','t1','d1t','e2','t2','d2t','e3','t3','d3t','e4','t4','d4t',
+    'cot1','cod1','cot2','cod2','snt1','snd1','snt2','snd2',
+    'bnL','bsL','cT','cD1','cD2','rl','re','rg','rgs','rk','cl','lcom'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&t[id]!==undefined)el.textContent=t[id];});
+  ['ln','lr'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=(t[id]||id)+' <span class="req">*</span>';});
+  const lt=document.getElementById('ltxt');if(lt)lt.textContent=t.ltxt;
+  const sh=document.getElementById('sh');if(sh)sh.textContent=star?t.stars[star]:t.sh;
+  const com=document.getElementById('com');if(com)com.placeholder=lang==='ko'?'자유롭게 남겨주세요 (선택)':'Feel free to share (optional)';
+  const ib=document.getElementById('iT');if(ib)ib.placeholder=lang==='ko'?'파손·분실 내용을 입력해 주세요':'Please describe the issue';
 }
 
-// ── OPTION SELECT (라디오 스타일)
-function selectOption(group, el) {
-  const container = document.getElementById(group + '-group');
-  container.querySelectorAll('.option-item').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  state[group] = el.dataset.val;
-  document.getElementById('err-' + group).classList.remove('show');
-
-  // 파손·분실 상세 조건부 표시
-  if (group === 'condition') {
-    const detail = document.getElementById('condition-detail');
-    if (state.condition === '파손·분실있음') {
-      detail.classList.add('show');
-    } else {
-      detail.classList.remove('show');
-    }
+function upProg(){
+  for(let i=1;i<=4;i++){
+    const d=document.getElementById('d'+i);
+    if(i<cur){d.className='sdot done';d.textContent='✓';}
+    else if(i===cur){d.className='sdot act';d.textContent=i;}
+    else{d.className='sdot';d.textContent=i;}
+    if(i<4)document.getElementById('l'+i).className='sline'+(i<cur?' done':'');
   }
+  document.getElementById('sL').textContent='Step '+cur;
+  document.getElementById('pB').style.width=(cur/4*100).toFixed(1)+'%';
+  document.getElementById('bp').style.display=cur>1?'flex':'none';
+  const last=cur===4;
+  document.getElementById('bn').style.display=last?'none':'flex';
+  document.getElementById('bs').style.display=last?'flex':'none';
 }
 
-// ── STAR RATING
-const starLabels = {
-  ko: ['', '아쉬웠어요 😔', '부족했어요 😐', '괜찮았어요 🙂', '좋았어요 😊', '최고였어요 🤩'],
-  en: ['', 'Disappointing 😔', 'Below average 😐', 'Okay 🙂', 'Good 😊', 'Excellent! 🤩']
-};
-function setStar(n) {
-  state.star = n;
-  document.querySelectorAll('.star').forEach((s, i) => {
-    s.classList.toggle('lit', i < n);
-  });
-  updateStarLabel();
-}
-function updateStarLabel() {
-  const label = document.getElementById('star-label');
-  if (state.star > 0) {
-    label.textContent = starLabels[state.lang][state.star];
-  } else {
-    label.innerHTML = `<span class="t" data-ko="별점을 선택해 주세요 (선택)" data-en="Rate your stay (optional)">${state.lang === 'ko' ? '별점을 선택해 주세요 (선택)' : 'Rate your stay (optional)'}</span>`;
-  }
+function showSec(n){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act'));
+  const s=document.getElementById('s'+n);if(s)s.classList.add('act');
+  document.getElementById('cw').classList.remove('on');
+  document.getElementById('nav').style.display='';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ── TOAST
-function showToast(msg, isErr) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast' + (isErr ? ' error' : '') + ' show';
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
+function flash(m){const v=document.getElementById('vm');v.textContent=m;v.className='vmsg on';setTimeout(()=>{v.className='vmsg';},3200);}
 
-// ── VALIDATION
-function validate(step) {
-  if (step === 1) {
-    let ok = true;
-    const name = document.getElementById('inp-name').value.trim();
-    const room = document.getElementById('inp-room').value.trim();
-    if (!name) { document.getElementById('err-name').classList.add('show'); ok = false; }
-    else { document.getElementById('err-name').classList.remove('show'); state.name = name; }
-    if (!room) { document.getElementById('err-room').classList.add('show'); ok = false; }
-    else { document.getElementById('err-room').classList.remove('show'); state.room = room; }
-    return ok;
-  }
-  if (step === 2) {
-    if (!state.condition) { document.getElementById('err-condition').classList.add('show'); return false; }
-    document.getElementById('err-condition').classList.remove('show');
-    state.conditionDetail = document.getElementById('inp-condition-detail').value.trim();
-    return true;
-  }
-  if (step === 3) {
-    if (!state.smoking) { document.getElementById('err-smoking').classList.add('show'); return false; }
-    document.getElementById('err-smoking').classList.remove('show');
-    return true;
-  }
+function valid(n){
+  const t=T[lang];
+  if(n===1){if(!document.getElementById('gN').value.trim()||!document.getElementById('rN').value.trim()){flash(t.vF);return false;}}
+  if(n===2&&!cond){flash(t.vC);return false;}
+  if(n===3&&!smoke){flash(t.vS);return false;}
   return true;
 }
 
-// ── NAVIGATION
-function goNext(step) {
-  if (!validate(step)) return;
-  goToStep(step + 1);
-}
-function goPrev(step) {
-  goToStep(step - 1);
-}
-function goToStep(step) {
-  document.getElementById('sec-' + state.step).classList.remove('active');
-  state.step = step;
-  const sec = document.getElementById('sec-' + step);
-  if (sec) {
-    sec.classList.add('active');
-    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  updateProgress();
-}
-function updateProgress() {
-  for (let i = 1; i <= 4; i++) {
-    const dot = document.getElementById('dot-' + i);
-    dot.className = 'step-dot';
-    dot.textContent = i;
-    if (i < state.step) { dot.classList.add('done'); dot.textContent = ''; }
-    else if (i === state.step) { dot.classList.add('active'); }
-    if (i < 4) {
-      document.getElementById('line-' + i).classList.toggle('done', i < state.step);
-    }
-  }
+function next(){if(!valid(cur))return;if(cur<4){cur++;showSec(cur);upProg();}}
+function prev(){if(cur>1){cur--;showSec(cur);upProg();}}
+
+function selCond(v){
+  cond=v;
+  const isOk=v==='ok';
+  document.getElementById('c_ok').className='cho'+(isOk?' ok':'');
+  document.getElementById('c_iss').className='cho'+(!isOk?' warn':'');
+  document.getElementById('r_ok').className='radio'+(isOk?' ok':'');
+  document.getElementById('r_iss').className='radio'+(!isOk?' warn':'');
+  document.getElementById('ib').className='detail-box'+(v==='iss'?' on':'');
 }
 
-// ── SUBMIT
-async function submitForm() {
-  state.comment = document.getElementById('inp-comment').value.trim();
-
-  const btn = document.getElementById('btn-submit');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loading-spinner"></span><span class="t" data-ko="제출 중..." data-en="Submitting...">제출 중...</span>';
-
-  const now = new Date();
-  const ts = now.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-
-  const payload = {
-    type: 'checkout',
-    제출시각: ts,
-    예약자성명: state.name,
-    객실번호: state.room,
-    객실상태확인: state.condition,
-    특이사항확인: state.conditionDetail || '없음',
-    흡연확인: state.smoking,
-    별점: state.star || '',
-    한마디: state.comment || ''
-  };
-
-  try {
-    await fetch(GAS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
-    showSuccess(ts);
-  } catch (e) {
-    console.error(e);
-    btn.disabled = false;
-    btn.innerHTML = '<span class="t" data-ko="체크아웃 완료하기" data-en="Complete Check-out">체크아웃 완료하기</span>';
-    showToast(
-      state.lang === 'ko' ? '제출 중 오류가 발생했습니다. 다시 시도해 주세요.' : 'An error occurred. Please try again.',
-      true
-    );
-  }
+function selSmoke(v){
+  smoke=v;const isNo=v==='no';
+  document.getElementById('c_ns').className='cho'+(isNo?' ok':'');
+  document.getElementById('c_sm').className='cho'+(!isNo?' warn':'');
+  document.getElementById('r_ns').className='radio'+(isNo?' ok':'');
+  document.getElementById('r_sm').className='radio'+(!isNo?' warn':'');
 }
 
-// ── SUCCESS
-function showSuccess(ts) {
-  document.getElementById('sec-4').classList.remove('active');
-  document.getElementById('progress-bar').style.display = 'none';
-  const ss = document.getElementById('success-screen');
-  ss.classList.add('show');
-  document.getElementById('success-room').textContent = state.room;
-  document.getElementById('success-time').textContent = ts;
-  ss.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function setStar(n){
+  star=n;
+  document.querySelectorAll('.sbtn').forEach((b,i)=>b.className='sbtn'+(i<n?' on':''));
+  const sh=document.getElementById('sh');if(sh)sh.textContent=T[lang].stars[n];
 }
+
+async function sub(){
+  document.getElementById('lo').classList.add('on');
+  const now=new Date();
+  const pad=x=>String(x).padStart(2,'0');
+  const ts=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const data={type:'checkout',name:document.getElementById('gN').value.trim(),room:document.getElementById('rN').value.trim(),condition:cond,conditionDetail:document.getElementById('iT').value.trim(),smoking:smoke,star:star||'',comment:document.getElementById('com').value.trim(),checkoutTime:ts};
+  try{await fetch(GAS,{method:'POST',mode:'no-cors',body:JSON.stringify(data),headers:{'Content-Type':'application/json'}});}catch(e){}
+  document.getElementById('lo').classList.remove('on');
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act'));
+  document.getElementById('nav').style.display='none';
+  const t=T[lang];
+  document.getElementById('cT').textContent=t.cT;
+  document.getElementById('cD1').textContent=t.cD1;
+  document.getElementById('cD2').textContent=t.cD2;
+  document.getElementById('rnum').textContent=data.room+'호';
+  document.getElementById('rt').textContent=(lang==='ko'?'체크아웃 시각: ':'Check-out: ')+ts;
+  document.getElementById('cw').classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+upProg();setLang('ko');
 </script>
 </body>
 </html>
