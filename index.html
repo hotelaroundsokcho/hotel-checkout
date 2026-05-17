@@ -228,8 +228,7 @@ function selSmoke(v){smoke=v;const isNo=v==='no';document.getElementById('c_ns')
 function setStar(n){star=n;document.querySelectorAll('.sbtn').forEach((b,i)=>b.className='sbtn'+(i<n?' on':''));const sh=document.getElementById('sh');if(sh)sh.textContent=T[lang].stars[n];}
 async function sub(){
 document.getElementById('lo').classList.add('on');
-const now=new Date();const pad=x=>String(x).padStart(2,'0');
-const ts=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+const ts=new Date().toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
 const guestName=document.getElementById('gN').value.trim();
 const roomNumber=document.getElementById('rN').value.trim();
 const params=new URLSearchParams({type:'checkout',guestName,roomNumber,roomCondition:cond==='ok'?'이상없음':'파손분실있음',roomDetail:document.getElementById('iT').value.trim(),smoking:smoke==='no'?'흡연없음':'흡연있음',rating:String(star||''),comment:document.getElementById('com').value.trim()});
