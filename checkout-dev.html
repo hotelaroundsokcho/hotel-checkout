@@ -714,13 +714,13 @@ async function submitForm() {
 
   const payload = {
     type: 'checkout',
-    예약자성명: state.name,
-    객실번호: state.room,
-    객실상태확인: state.condition,
-    특이사항확인: state.conditionDetail || '없음',
-    흡연확인: state.smoking,
-    별점: state.star || '',
-    한마디: state.comment || ''
+    guestName: state.name,
+    roomNumber: state.room,
+    roomStatus: state.condition,
+    issueDetail: state.conditionDetail || '없음',
+    smokingCheck: state.smoking,
+    rating: state.star || '',
+    reviewText: state.comment || ''
   };
 
   try {
