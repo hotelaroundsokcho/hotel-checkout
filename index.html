@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>[DEV] Mobile Check-out — Hotel Around Sokcho</title>
+  <title>Mobile Check-out — Hotel Around Sokcho</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <style>
-
     :root {
       --esp:#2C1810; --mah:#5C3317; --ter:#8B5E3C; --car:#B8895A;
       --sand:#D4B896; --parch:#EDE0D0; --cream:#F5EFE6; --ivory:#FAF7F3; --ww:#FFFCF9;
@@ -581,7 +580,7 @@
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzv0X8ZZSjz2WG4Es9thpHwIvvnigbDLAhlEmM0dNrHDZ_0_ltTWB16nYGliChTKvVCcg/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzvOX8ZZSjz2WG4Es9thpHwIvvnigbDLAhlEmMOdNrHDZ_0_ltTWB16nYGliChTKvVCcg/exec';
 // ═══════════════════════════════════════════════
 
 const state = {
@@ -710,13 +709,13 @@ async function submitForm() {
 
   const payload = {
     type: 'checkout',
-    예약자성명: state.name,
-    객실번호: state.room,
-    객실상태확인: state.condition,
-    특이사항확인: state.conditionDetail || '없음',
-    흡연확인: state.smoking,
-    별점: state.star || '',
-    한마디: state.comment || ''
+    guestName: state.name,
+    roomNumber: state.room,
+    roomStatus: state.condition,
+    issueDetail: state.conditionDetail || '없음',
+    smokingCheck: state.smoking,
+    rating: state.star || '',
+    reviewText: state.comment || ''
   };
 
   try {
