@@ -585,7 +585,7 @@
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxOPcn86o4cvcQYp3S__VnQdYOLOR3w-xNg-LuEF5VE/dev';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzvOX8ZZSjz2WG4Es9thpHwIvvnigbDLAhlEmMOdNrHDZ_0_ltTWB16nYGliChTKvVCcg/exec';
 // ═══════════════════════════════════════════════
 
 const state = {
@@ -720,7 +720,8 @@ async function submitForm() {
     issueDetail: state.conditionDetail || '없음',
     smokingCheck: state.smoking,
     rating: state.star || '',
-    reviewText: state.comment || ''
+    reviewText: state.comment || '',
+    isTest: 'Y'
   };
 
   try {
